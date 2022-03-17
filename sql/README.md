@@ -5,3 +5,4 @@
 3. [Ödev 3](odev-3.md)
 4. [Ödev 4](odev-4.md)
 5. [Ödev 5](odev-5.md)
+6. [Ödev 6](odev-6.md)

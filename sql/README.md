@@ -9,3 +9,4 @@
 7. [Ödev 7](odev-7.md)
 8. [Ödev 8](odev-8.md)
 9. [Ödev 9](odev-9.md)
+10. [Ödev 10](odev-10.md)

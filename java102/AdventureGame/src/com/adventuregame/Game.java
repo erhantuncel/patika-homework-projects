@@ -29,41 +29,42 @@ public class Game {
 	
 	public void start() {
 		
-		ApplicationMain.printLogMessage(getPlayer().getName() +  " game is started.");
+//		ApplicationMain.printLogMessage(getPlayer().getName() +  " game is started.");
+		Helper.printLogMessage(getPlayer().getName() +  " game is started.");
 		
 		showWarriorSelectMenu();
 		while (true) {
-			ApplicationMain.printPlayerInfo(getPlayer());
+			Helper.printPlayerInfo(getPlayer());
 			if(!showTerritorySelectMenu()) {
-				ApplicationMain.printLogMessage("See you soon!");
+				Helper.printLogMessage("See you soon!");
 				break;
 			}
 		}
 	}
 	
 	private boolean showTerritorySelectMenu() {
-		Territory[] territories = ApplicationMain.TERRITORIES;
+		Territory[] territories = Helper.TERRITORIES;
 		printTerritories(territories);
 		System.out.print("Select territory: ");
-		int selectedMenuIndex = ApplicationMain.INPUT.nextInt();
+		int selectedMenuIndex = Helper.INPUT.nextInt();
 		if(selectedMenuIndex == 0) {
 			return false;
 		}
 		while(selectedMenuIndex < 1 || selectedMenuIndex > territories.length) {
 			System.out.print("Invalid territory number. Select territory: ");
-			selectedMenuIndex = ApplicationMain.INPUT.nextInt();
+			selectedMenuIndex = Helper.INPUT.nextInt();
 		}
 		return territories[selectedMenuIndex - 1].onTerritory(getPlayer());
 	}
 
 	private void showWarriorSelectMenu() {
-		Warrior[] warriors = ApplicationMain.WARRIORS;
+		Warrior[] warriors = Helper.WARRIORS;
 		printWarriorList(warriors);
 		System.out.print("Select warrior: ");
-		int selectedMenuIndex = ApplicationMain.INPUT.nextInt();		
+		int selectedMenuIndex = Helper.INPUT.nextInt();		
 		while (selectedMenuIndex < 1 || selectedMenuIndex > warriors.length) {
-			ApplicationMain.printLogMessage("Invalid warrior number. Select warrior: ");
-			selectedMenuIndex = ApplicationMain.INPUT.nextInt();
+			Helper.printLogMessage("Invalid warrior number. Select warrior: ");
+			selectedMenuIndex = Helper.INPUT.nextInt();
 		}
 		this.player.selectWarrior(warriors[selectedMenuIndex - 1]);
 	}

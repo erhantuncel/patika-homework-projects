@@ -11,22 +11,22 @@ public class ToolStore extends SafeTerritory {
 		this.setPlayer(player);
 		boolean showMenu = true;
 		while(showMenu) {
-			ApplicationMain.printPlayerInfo(player);
+			Helper.printPlayerInfo(player);
 			System.out.println("1 - Weapons");
 			System.out.println("2 - Armors");
 			System.out.println("0 - Quit");
 			System.out.print("Select Tool: ");
-			int selectedMenuIndex = ApplicationMain.INPUT.nextInt();
+			int selectedMenuIndex = Helper.INPUT.nextInt();
 			switch (selectedMenuIndex) {
 			case 1:
-				ApplicationMain.printPlayerInfo(player);
-				printTools(ApplicationMain.WEAPONS);
-				buyTool(ApplicationMain.WEAPONS);
+				Helper.printPlayerInfo(player);
+				printTools(Helper.WEAPONS);
+				buyTool(Helper.WEAPONS);
 				break;
 			case 2:
-				ApplicationMain.printPlayerInfo(player);
-				printTools(ApplicationMain.ARMORS);
-				buyTool(ApplicationMain.ARMORS);
+				Helper.printPlayerInfo(player);
+				printTools(Helper.ARMORS);
+				buyTool(Helper.ARMORS);
 				break;
 			case 0:
 				showMenu = false;
@@ -55,28 +55,27 @@ public class ToolStore extends SafeTerritory {
 			toolType = "Armor";
 		}
 		System.out.print("Select  " + toolType + ": ");
-		int selectedIndex = ApplicationMain.INPUT.nextInt();
+		int selectedIndex = Helper.INPUT.nextInt();
 		while(selectedIndex < 0 || selectedIndex > tools.length) {
 			if(selectedIndex == 0) {
 				return;
 			}
 			System.out.print("Invalid " + toolType.toLowerCase() + 
 					" number. Please select " + toolType.toLowerCase() + ": ");
-			selectedIndex = ApplicationMain.INPUT.nextInt();
+			selectedIndex = Helper.INPUT.nextInt();
 		}
 		
 		if (selectedIndex != 0) {			
 			Tool tool =  tools[selectedIndex-1];
 			
 			if(getPlayer().getWarrior().getMoney() < tool.getPrice()) {
-				ApplicationMain.printLogMessage("WARNING: There is not enought balance.");
+				Helper.printLogMessage("WARNING: There is not enought balance.");
 			} else {
 				int balance = getPlayer().getWarrior().getMoney() - tool.getPrice();
 				getPlayer().getWarrior().setMoney(balance);
-				ApplicationMain.printLogMessage("You bought " + tool.getName());
+				Helper.printLogMessage("You bought " + tool.getName());
 				if(tool instanceof Weapon) {				
 					getPlayer().getWarrior().setWeapon(tool);
-					getPlayer().getWarrior().setHealth(0);
 				} else if(tool instanceof Armor) {
 					getPlayer().getWarrior().setArmor(tool);
 				}

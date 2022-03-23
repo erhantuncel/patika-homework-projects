@@ -10,10 +10,10 @@ public class Home extends SafeTerritory {
 	public boolean onTerritory(Player player) {
 		this.setPlayer(player);
 		
-		for(Warrior warrior : ApplicationMain.WARRIORS) {
+		for(Warrior warrior : Helper.WARRIORS) {
 			if(this.getPlayer().getWarrior().getId() == warrior.getId()) {
 				this.getPlayer().getWarrior().setHealth(warrior.getHealth());
-				System.out.println("You are at home. Health is full.");
+				Helper.printLogMessage("You are at home. Health is full.");
 			}
 		}
 		return true;

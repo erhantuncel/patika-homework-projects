@@ -1,5 +1,9 @@
 package com.adventuregame;
 
-public abstract class Award extends Item {
+public class Award extends Item {
 
+	public Award(int id, String name) {
+		super(id, name);
+	}
+	
 }

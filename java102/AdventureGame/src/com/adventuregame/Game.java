@@ -1,10 +1,6 @@
 package com.adventuregame;
 
-import java.util.Scanner;
-
 public class Game {
-
-	private Scanner input = new Scanner(System.in);
 	
 	private Player player;
 	
@@ -33,47 +29,62 @@ public class Game {
 	
 	public void start() {
 		
-		System.out.println(getPlayer().getName() +  " game is started.\n");
+		ApplicationMain.printLogMessage(getPlayer().getName() +  " game is started.");
 		
 		showWarriorSelectMenu();
-		
-		
-		this.input.close();
-		
-	}
-
-	private void showWarriorSelectMenu() {
-		Warrior[] warriors = getWarriroList();
-		printWarriorList(warriors);
-		System.out.print("Please select warrior: ");
 		while (true) {
-			int selectedMenuIndex = input.nextInt();
-			if(selectedMenuIndex > 1 && selectedMenuIndex < warriors.length+1 ) {			
-				this.player.selectWarrior(warriors[selectedMenuIndex - 1]);
+			ApplicationMain.printPlayerInfo(getPlayer());
+			if(!showTerritorySelectMenu()) {
+				ApplicationMain.printLogMessage("See you soon!");
 				break;
-			} else {
-				printWarriorList(warriors);
-				System.out.print("Invalid warrior number. Please select warrior: ");
-				continue;
 			}
 		}
 	}
+	
+	private boolean showTerritorySelectMenu() {
+		Territory[] territories = ApplicationMain.TERRITORIES;
+		printTerritories(territories);
+		System.out.print("Select territory: ");
+		int selectedMenuIndex = ApplicationMain.INPUT.nextInt();
+		if(selectedMenuIndex == 0) {
+			return false;
+		}
+		while(selectedMenuIndex < 1 || selectedMenuIndex > territories.length) {
+			System.out.print("Invalid territory number. Select territory: ");
+			selectedMenuIndex = ApplicationMain.INPUT.nextInt();
+		}
+		return territories[selectedMenuIndex - 1].onTerritory(getPlayer());
+	}
 
-	private Warrior[] getWarriroList() {
-		Warrior[] warriors = new Warrior[] {
-				new Warrior(1, "Samurai", 5, 21, 15),
-				new Warrior(2, "Archer", 7, 18, 20),
-				new Warrior(3, "Knight", 8, 24, 5)
-		};
-		return warriors;
+	private void showWarriorSelectMenu() {
+		Warrior[] warriors = ApplicationMain.WARRIORS;
+		printWarriorList(warriors);
+		System.out.print("Select warrior: ");
+		int selectedMenuIndex = ApplicationMain.INPUT.nextInt();		
+		while (selectedMenuIndex < 1 || selectedMenuIndex > warriors.length) {
+			ApplicationMain.printLogMessage("Invalid warrior number. Select warrior: ");
+			selectedMenuIndex = ApplicationMain.INPUT.nextInt();
+		}
+		this.player.selectWarrior(warriors[selectedMenuIndex - 1]);
 	}
 	
 	private void printWarriorList(Warrior[] warriors) {
 		int index = 1;
+		System.out.println();
 		for (Warrior warrior : warriors) {
 			System.out.println(index + " - " + warrior);
 			index++;
 		}
+		System.out.println("--------------------------------------------------------------");
+	}
+	
+	private void printTerritories(Territory[] territories) {
+		int index = 1;
+		for(Territory territory : territories) {
+			System.out.println(index + " - " + territory);;
+			index++;
+		}
+		System.out.println("0 - Quit");
 		System.out.println("--------------------------------------------------------------");
 	}
 }

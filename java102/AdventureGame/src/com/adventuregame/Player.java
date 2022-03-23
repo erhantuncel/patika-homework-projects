@@ -37,7 +37,14 @@ public class Player {
 	}
 	
 	public void selectWarrior(Warrior warrior) {
-		setWarrior(warrior);
-		System.out.println(warrior.getName() + " is selected.\n");
+		
+		setWarrior(
+				new Warrior(warrior.getId(), 
+							warrior.getName(), 
+							warrior.getDamage(), 
+							warrior.getHealth(), 
+							warrior.getMoney())
+				);
+		System.out.println(warrior.getName() + " is selected.");
 	}
 }

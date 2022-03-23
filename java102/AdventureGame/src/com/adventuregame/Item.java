@@ -5,6 +5,12 @@ public abstract class Item {
 	private int id;
 	
 	private String name;
+	
+	public Item(int id, String name) {
+		super();
+		this.id = id;
+		this.name = name;
+	}
 
 	public int getId() {
 		return id;
@@ -21,5 +27,4 @@ public abstract class Item {
 	public void setName(String name) {
 		this.name = name;
 	}
-	
 }

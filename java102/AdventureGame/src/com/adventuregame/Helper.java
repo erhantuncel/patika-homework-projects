@@ -91,4 +91,28 @@ public class Helper {
 			return false;
 		}
 	}
+	
+	public static Tool selectTool503020Probability(int randomNumber, Tool tool50, Tool tool30, Tool tool20) {
+		Tool tool = null;
+		if (randomNumber <= 50) {
+			tool = tool50;
+		} else if (randomNumber > 50 && randomNumber <= 80) {
+			tool = tool30;
+		} else if (randomNumber > 80 && randomNumber <= 100) {
+			tool = tool20;
+		}
+		return tool;
+	}
+	
+	public static int selectMoney503020Probability(int randomNumber, int money50, int money30, int money20) {
+		int money = 0;
+		if (randomNumber <= 50) {
+			money = money50;
+		} else if (randomNumber > 50 && randomNumber <= 80) {
+			money = money30;
+		} else if (randomNumber > 80 && randomNumber <= 100) {
+			money = money20;
+		}
+		return money;
+	}
 }

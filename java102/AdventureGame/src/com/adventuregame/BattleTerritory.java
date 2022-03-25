@@ -108,13 +108,56 @@ public class BattleTerritory extends Territory {
 			
 			if(monsterToFight.getHealth() < getPlayer().getWarrior().getHealth()) {
 				Helper.printLogMessage("You defeated the monster.");
-				getPlayer().getWarrior().setMoney(getPlayer().getWarrior().getMoney() + monsterToFight.getMoney());
-				Helper.printLogMessage("Money won: " + monsterToFight.getMoney());
+				if(monsterToFight.getMoney() != 0) {					
+					getPlayer().getWarrior().setMoney(getPlayer().getWarrior().getMoney() + monsterToFight.getMoney());
+					Helper.printLogMessage("Money won: " + monsterToFight.getMoney());
+				}
 			}
 		}
-		giveAward();
+		
+		if(getItem() != null) {			
+			giveAward();
+		} else {
+			giveToolOrMoney();
+		}
 		
 		return false;
+	}
+
+	private void giveToolOrMoney() {
+		SplittableRandom random = new SplittableRandom();
+		int randomToolNumber = random.nextInt(1, 101);
+		if(randomToolNumber <= 15) {
+			int randomWeaponNumber = random.nextInt(1, 101);
+			Weapon weaponToGive = (Weapon) Helper.selectTool503020Probability(randomWeaponNumber, 
+					Helper.WEAPONS[0], 
+					Helper.WEAPONS[1], 
+					Helper.WEAPONS[2]);
+			Weapon warriorWeapon = getPlayer().getWarrior().getWeapon();
+			if(warriorWeapon != null && warriorWeapon.getDamage() < weaponToGive.getDamage()) {
+				getPlayer().getWarrior().setWeapon(weaponToGive);
+				Helper.printLogMessage("Weapon won: " + weaponToGive.getName());
+			}
+		} else if(randomToolNumber > 15 && randomToolNumber <= 30) {
+			int randomArmorNumber = random.nextInt(1, 101);
+			Armor armorToGive = (Armor) Helper.selectTool503020Probability(randomArmorNumber, 
+					Helper.ARMORS[0],
+					Helper.ARMORS[1],
+					Helper.ARMORS[2]);
+			Armor warriorArmor = getPlayer().getWarrior().getArmor();
+			if(warriorArmor != null && warriorArmor.getProtection() < armorToGive.getProtection()) {
+				getPlayer().getWarrior().setArmor(armorToGive);
+				Helper.printLogMessage("Armor won: " + armorToGive.getName());
+			}
+		} else if(randomToolNumber > 30 && randomToolNumber <= 55) {
+			int randomMoneyNumber = random.nextInt(1, 101);
+			int moneyToGive = Helper.selectMoney503020Probability(randomMoneyNumber, 1, 5, 10);
+			int warriorMoney = getPlayer().getWarrior().getMoney();
+			getPlayer().getWarrior().setMoney(warriorMoney + moneyToGive);
+			Helper.printLogMessage("Money won: " + moneyToGive);
+		} else if(randomToolNumber > 55 && randomToolNumber <= 100) {
+			Helper.printLogMessage("No money or tool won!");
+		}
 	}
 
 	private void giveAward() {
@@ -130,10 +173,12 @@ public class BattleTerritory extends Territory {
 
 	@Override
 	public boolean onTerritory(Player player) {
-		for(Award award : player.getAwards()) {
-			if(award.getName().equals(getItem().getName())) {
-				Helper.printLogMessage("You have already had " + getItem().getName());
-				return true;
+		if(getItem() != null) {			
+			for(Award award : player.getAwards()) {
+				if(award.getName().equals(getItem().getName())) {
+					Helper.printLogMessage("You have already had " + getItem().getName());
+					return true;
+				}
 			}
 		}
 		setPlayer(player);

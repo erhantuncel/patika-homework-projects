@@ -92,6 +92,9 @@ public class BattleTerritory extends Territory {
 			}
 			
 			while(getPlayer().getWarrior().getHealth() > 0 && monsterToFight.getHealth() > 0) {
+				if(getPlayer().getWarrior().getHealth() <= 0) {
+					return false;
+				}
 				System.out.println("\nHit or Excape H/E: ");
 				String hitOrExcape = Helper.INPUT.next().toUpperCase();
 				if(hitOrExcape.equals("H")) {

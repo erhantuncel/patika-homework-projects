@@ -44,7 +44,7 @@ public class ToolStore extends SafeTerritory {
 			index++;
 		}
 		System.out.println("0 - Quit");
-		System.out.println("-----------------------------------------------------------------------");
+		System.out.println("------------------------------------------------------------------------");
 	}
 	
 	private void buyTool(Tool[] tools) {

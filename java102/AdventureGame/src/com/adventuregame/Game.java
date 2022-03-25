@@ -34,25 +34,45 @@ public class Game {
 		while (true) {
 			Helper.printPlayerInfo(getPlayer());
 			if(!showTerritorySelectMenu()) {
-				Helper.printLogMessage("See you soon!");
+				if (getPlayer().getWarrior().getHealth() <= 0) {
+					System.out.println("\n");
+					System.out.println("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+					System.out.println("+                              GAME OVER!                              +");
+					System.out.println("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+					System.out.println("\n");
+				} else if (isPlayerWonAllAwards(getPlayer())) {
+					System.out.println("\n");
+					System.out.println("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+					System.out.println("+                          YOU WON THE GAME!                           +");
+					System.out.println("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+					System.out.println("\n");
+				} else {					
+					Helper.printLogMessage("See you soon!");
+				}
 				break;
 			}
 		}
 	}
 	
 	private boolean showTerritorySelectMenu() {
-		Territory[] territories = Helper.TERRITORIES;
-		printTerritories(territories);
-		System.out.print("Select territory: ");
-		int selectedMenuIndex = Helper.INPUT.nextInt();
-		if(selectedMenuIndex == 0) {
+		if(getPlayer().getWarrior().getHealth() <= 0) {
 			return false;
+		} else if(isPlayerWonAllAwards(getPlayer())) {
+			return false;
+		} else {			
+			Territory[] territories = Helper.TERRITORIES;
+			printTerritories(territories);
+			System.out.print("Select territory: ");
+			int selectedMenuIndex = Helper.INPUT.nextInt();
+			if(selectedMenuIndex == 0) {
+				return false;
+			}
+			while(selectedMenuIndex < 1 || selectedMenuIndex > territories.length) {
+				System.out.print("Invalid territory number. Select territory: ");
+				selectedMenuIndex = Helper.INPUT.nextInt();
+			}
+			return territories[selectedMenuIndex - 1].onTerritory(getPlayer());
 		}
-		while(selectedMenuIndex < 1 || selectedMenuIndex > territories.length) {
-			System.out.print("Invalid territory number. Select territory: ");
-			selectedMenuIndex = Helper.INPUT.nextInt();
-		}
-		return territories[selectedMenuIndex - 1].onTerritory(getPlayer());
 	}
 
 	private void showWarriorSelectMenu() {
@@ -74,7 +94,7 @@ public class Game {
 			System.out.println(index + " - " + warrior);
 			index++;
 		}
-		System.out.println("-----------------------------------------------------------------------");
+		System.out.println("------------------------------------------------------------------------");
 	}
 	
 	private void printTerritories(Territory[] territories) {
@@ -84,6 +104,13 @@ public class Game {
 			index++;
 		}
 		System.out.println("0 - Quit");
-		System.out.println("-----------------------------------------------------------------------");
+		System.out.println("------------------------------------------------------------------------");
+	}
+	
+	private boolean isPlayerWonAllAwards(Player player) {
+		if(player.getAwards().length != Helper.AWARDS.length) {
+			return false;
+		}
+		return true;
 	}
 }

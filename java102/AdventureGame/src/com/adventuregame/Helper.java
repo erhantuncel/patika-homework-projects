@@ -8,7 +8,7 @@ public class Helper {
 
 	public static Scanner INPUT = new Scanner(System.in);
 	public static final Warrior[] WARRIORS = new Warrior[] {
-		new Warrior(1, "Samurai", 5, 21, 55),
+		new Warrior(1, "Samurai", 5, 21, 15),
 		new Warrior(2, "Archer", 7, 18, 20),
 		new Warrior(3, "Knight", 8, 24, 5)
 	};

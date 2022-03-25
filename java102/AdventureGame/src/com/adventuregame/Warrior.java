@@ -2,27 +2,27 @@ package com.adventuregame;
 
 public class Warrior extends Rival {
 
-	private Tool weapon;	
-	private Tool armor;
+	private Weapon weapon;	
+	private Armor armor;
 
 	public Warrior(int id, String name, int damage, int health, int money) {
 		super(id, name, damage, health, money);
 	}
 
-	public Tool getWeapon() {
+	public Weapon getWeapon() {
 		return weapon;
 	}
 
-	public void setWeapon(Tool weapon) {
+	public void setWeapon(Weapon weapon) {
 		this.weapon = weapon;
 	}
 
-	public Tool getArmor() {
+	public Armor getArmor() {
 		return armor;
 	}
 
 
-	public void setArmor(Tool armor) {
+	public void setArmor(Armor armor) {
 		this.armor = armor;
 	}
 
@@ -36,10 +36,16 @@ public class Warrior extends Rival {
 	}
 
 	@Override
-	public void fight(Rival rival) {
-		// TODO Auto-generated method stub
-		
+	public void hit(Rival rival) {
+		rival.setHealth(rival.getHealth() - getTotalDamage());
+		System.out.println(rival.getName() + " health: " + rival.getHealth());
 	}
 	
-
+	private int getTotalDamage() {
+		if(weapon != null) {
+			return getDamage() + weapon.getDamage();
+		} else {
+			return getDamage();
+		}
+	}
 }

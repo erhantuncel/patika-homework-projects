@@ -61,5 +61,5 @@ public abstract class Rival {
 		this.money = money;
 	}
 	
-	public abstract void fight(Rival rival);
+	public abstract void hit(Rival rival);
 }

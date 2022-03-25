@@ -44,7 +44,7 @@ public class ToolStore extends SafeTerritory {
 			index++;
 		}
 		System.out.println("0 - Quit");
-		System.out.println("--------------------------------------------------------------");
+		System.out.println("-----------------------------------------------------------------------");
 	}
 	
 	private void buyTool(Tool[] tools) {
@@ -75,9 +75,9 @@ public class ToolStore extends SafeTerritory {
 				getPlayer().getWarrior().setMoney(balance);
 				Helper.printLogMessage("You bought " + tool.getName());
 				if(tool instanceof Weapon) {				
-					getPlayer().getWarrior().setWeapon(tool);
+					getPlayer().getWarrior().setWeapon((Weapon) tool);
 				} else if(tool instanceof Armor) {
-					getPlayer().getWarrior().setArmor(tool);
+					getPlayer().getWarrior().setArmor((Armor) tool);
 				}
 			}
 		}

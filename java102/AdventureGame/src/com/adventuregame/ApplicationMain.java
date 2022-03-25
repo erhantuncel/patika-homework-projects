@@ -10,5 +10,6 @@ public class ApplicationMain {
 		game.start();	
 		
 		Helper.INPUT.close();
+		
 	}
 }

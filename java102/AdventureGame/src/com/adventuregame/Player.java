@@ -10,6 +10,7 @@ public class Player {
 	
 	public Player(String name) {
 		this.name = name;
+		awards = new Award[]{};
 	}
 
 	public String getName() {

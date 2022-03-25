@@ -8,9 +8,21 @@ public class Monster extends Rival {
 	}
 
 	@Override
-	public void fight(Rival rival) {
-		// TODO Auto-generated method stub
-		
+	public void hit(Rival rival) {
+		int totalDamage = getDamage();
+		Warrior warrior = (Warrior) rival;
+		if(warrior.getArmor() != null) {
+			totalDamage = totalDamage - warrior.getArmor().getProtection();
+			if(totalDamage < 0) {
+				totalDamage = 0;
+			}
+		}
+		rival.setHealth(rival.getHealth() - totalDamage);
+		System.out.println(rival.getName() + " health: " + rival.getHealth());
 	}
 
+	@Override
+	public String toString() {
+		return getName() + "\tDamage: " + getDamage() + "\tHealth: " + getHealth() + "\tMoney: " + getMoney();
+	}
 }

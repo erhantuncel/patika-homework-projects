@@ -28,8 +28,6 @@ public class Game {
 	}
 	
 	public void start() {
-		
-//		ApplicationMain.printLogMessage(getPlayer().getName() +  " game is started.");
 		Helper.printLogMessage(getPlayer().getName() +  " game is started.");
 		
 		showWarriorSelectMenu();
@@ -76,7 +74,7 @@ public class Game {
 			System.out.println(index + " - " + warrior);
 			index++;
 		}
-		System.out.println("--------------------------------------------------------------");
+		System.out.println("-----------------------------------------------------------------------");
 	}
 	
 	private void printTerritories(Territory[] territories) {
@@ -86,6 +84,6 @@ public class Game {
 			index++;
 		}
 		System.out.println("0 - Quit");
-		System.out.println("--------------------------------------------------------------");
+		System.out.println("-----------------------------------------------------------------------");
 	}
 }

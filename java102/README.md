@@ -4,3 +4,4 @@
 2. [List Class](ListClass/)
 3. [Book Sorter](BookSorter/)
 4. [Fixture Builder](FixtureBuilder/)
+5. [Patika Store](PatikaStore/)

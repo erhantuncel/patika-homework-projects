@@ -5,3 +5,4 @@
 3. [Book Sorter](BookSorter/)
 4. [Fixture Builder](FixtureBuilder/)
 5. [Patika Store](PatikaStore/)
+6. [Insurance Management System](InsuranceManagementSystem/)

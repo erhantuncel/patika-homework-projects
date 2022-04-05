@@ -32,4 +32,30 @@ public class Helper {
         }
         return point;
     }
+
+    public static boolean isFieldEmpty(JTextField field) {
+        return field.getText().trim().isEmpty();
+    }
+
+    public static void showMessage(String message, MessageType... messageTypes) {
+        String title = "Message";
+        if (messageTypes.length != 0) {
+            MessageType messageType = messageTypes[0];
+            switch (messageType) {
+                case ALL_FIELDS_MUST_BE_FILLED :
+                    message = "All fields must be filled.";
+                    title = "Error";
+                    break;
+                case SUBMIT_SUCCESSFULLY:
+                    message = "Operation done succesfully.";
+                    title = "Information";
+                    break;
+                case SUBMIT_WITH_ERROR:
+                    message = "Error occurred.";
+                    title = "Error";
+                    break;
+            }
+        }
+        JOptionPane.showMessageDialog(null, message, title, JOptionPane.INFORMATION_MESSAGE);
+    }
 }

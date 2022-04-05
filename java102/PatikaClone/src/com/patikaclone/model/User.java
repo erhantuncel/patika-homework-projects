@@ -1,7 +1,9 @@
 package com.patikaclone.model;
 
 import com.patikaclone.helper.DBConnector;
+import com.patikaclone.helper.Helper;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -81,10 +83,69 @@ public class User {
                 object.setPassword(rs.getString("password"));
                 object.setType(rs.getString("type"));
                 userList.add(object);
+//                st.close();
+//                rs.close();
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return userList;
+    }
+
+    public static boolean add(String name, String uname, String password, String type) {
+        String query = "INSERT INTO users(name, uname, password, type) VALUES (?, ?, ?, CAST(? AS user_type))";
+        User userFound = getByUname(uname);
+        if(userFound != null) {
+            Helper.showMessage("There is a user has same username with " + uname);
+            return false;
+        }
+        try {
+            PreparedStatement preparedStatement = DBConnector.getInstance().prepareStatement(query);
+            preparedStatement.setString(1, name);
+            preparedStatement.setString(2, uname);
+            preparedStatement.setString(3, password);
+            preparedStatement.setString(4, type);
+            int result = preparedStatement.executeUpdate();
+            preparedStatement.close();
+            return result != -1;
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return true;
+    }
+
+    public static User getByUname(String uname) {
+        User userFound = null;
+        String query = "SELECT * FROM users WHERE uname = ?";
+        try {
+            PreparedStatement preparedStatement = DBConnector.getInstance().prepareStatement(query);
+            preparedStatement.setString(1, uname);
+            ResultSet rs = preparedStatement.executeQuery();
+            while (rs.next()) {
+                userFound = new User();
+                userFound.setId(rs.getInt("id"));
+                userFound.setName(rs.getString("name"));
+                userFound.setUname(rs.getString("uname"));
+                userFound.setPassword(rs.getString("password"));
+                userFound.setType(rs.getString("type"));
+            }
+            preparedStatement.close();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return userFound;
+    }
+
+    public static boolean remove(int id) {
+        String query = "DELETE FROM users WHERE id = ?";
+        try {
+            PreparedStatement preparedStatement = DBConnector.getInstance().prepareStatement(query);
+            preparedStatement.setInt(1, id);
+            int result = preparedStatement.executeUpdate();
+            return result != -1;
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return true;
     }
 }

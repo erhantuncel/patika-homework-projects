@@ -12,6 +12,12 @@ target/*
 .project
 application-dev.properties
 
+# IntelliJ IDEA files
+.idea
+*/out/*
+out/*
+*.iml
+
 # Only Local
 zOnlyLocal
 

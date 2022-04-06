@@ -8,6 +8,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.List;
 
 public class User {
 
@@ -83,8 +84,6 @@ public class User {
                 object.setPassword(rs.getString("password"));
                 object.setType(rs.getString("type"));
                 userList.add(object);
-//                st.close();
-//                rs.close();
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -106,7 +105,6 @@ public class User {
             preparedStatement.setString(3, password);
             preparedStatement.setString(4, type);
             int result = preparedStatement.executeUpdate();
-            preparedStatement.close();
             return result != -1;
         } catch (SQLException e) {
             System.out.println(e.getMessage());
@@ -129,7 +127,6 @@ public class User {
                 userFound.setPassword(rs.getString("password"));
                 userFound.setType(rs.getString("type"));
             }
-            preparedStatement.close();
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
@@ -147,5 +144,60 @@ public class User {
             System.out.println(e.getMessage());
         }
         return true;
+    }
+
+    public static boolean update(int id, String name, String uname, String password, String type) {
+        String query = "UPDATE users SET name=?, uname=?, password=?, type=CAST(? AS user_type) WHERE id=?";
+        User userFound = getByUname(uname);
+        if(userFound != null && userFound.getId() != id) {
+            Helper.showMessage("There is a user has same username with " + uname);
+            return false;
+        }
+        // TODO: Check user types before update database
+        try {
+            PreparedStatement preparedStatement = DBConnector.getInstance().prepareStatement(query);
+            preparedStatement.setString(1, name);
+            preparedStatement.setString(2, uname);
+            preparedStatement.setString(3, password);
+            preparedStatement.setString(4, type);
+            preparedStatement.setInt(5, id);
+            int result = preparedStatement.executeUpdate();
+            return result != -1;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return true;
+    }
+
+    public static List<User> searchUserList(String query) {
+        ArrayList<User> userList = new ArrayList<>();
+        User object;
+        try {
+            Statement st = DBConnector.getInstance().createStatement();
+            ResultSet rs = st.executeQuery(query);
+            while (rs.next()) {
+                object = new User();
+                object.setId(rs.getInt("id"));
+                object.setName(rs.getString("name"));
+                object.setUname(rs.getString("uname"));
+                object.setPassword(rs.getString("password"));
+                object.setType(rs.getString("type"));
+                userList.add(object);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return userList;
+    }
+
+    public static String createSearchQuery(String name, String uname, String type) {
+        String query = "SELECT * FROM users WHERE uname ILIKE '%{{uname}}%' AND name ILIKE '%{{name}}%'";
+        if (!type.isEmpty()) {
+            query = query + " AND type='{{type}}'::user_type";
+            query = query.replace("{{type}}", type);
+        }
+        query = query.replace("{{uname}}", uname);
+        query = query.replace("{{name}}", name);
+        return query;
     }
 }

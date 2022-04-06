@@ -7,11 +7,11 @@ import com.patikaclone.model.Operator;
 import com.patikaclone.model.User;
 
 import javax.swing.*;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
+import javax.swing.event.TableModelEvent;
 import javax.swing.table.DefaultTableModel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 
 public class OperatorGUI extends JFrame {
     private JPanel wrapper;
@@ -30,6 +30,10 @@ public class OperatorGUI extends JFrame {
     private JButton btn_user_add;
     private JTextField fld_user_id;
     private JButton btn_user_remove;
+    private JTextField fld_search_user_name;
+    private JTextField fld_search_user_username;
+    private JComboBox cmb_search_user_type;
+    private JButton btn_user_search;
     private DefaultTableModel mdl_user_list;
     private Object[] row_user_list;
 
@@ -76,6 +80,22 @@ public class OperatorGUI extends JFrame {
             }
         });
 
+        tbl_user_list.getModel().addTableModelListener(e -> {
+            if (e.getType() == TableModelEvent.UPDATE) {
+                int user_id = Integer.parseInt(tbl_user_list.getValueAt(tbl_user_list.getSelectedRow(), 0).toString());
+                String user_name = tbl_user_list.getValueAt(tbl_user_list.getSelectedRow(), 1).toString();
+                String user_uname = tbl_user_list.getValueAt(tbl_user_list.getSelectedRow(), 2).toString();
+                String user_password = tbl_user_list.getValueAt(tbl_user_list.getSelectedRow(), 3).toString();
+                String user_type = tbl_user_list.getValueAt(tbl_user_list.getSelectedRow(), 4).toString();
+
+                if (User.update(user_id, user_name, user_uname, user_password, user_type)) {
+                    Helper.showMessage(null, MessageType.SUBMIT_SUCCESSFULLY);
+                }
+
+                populateUserModel();
+            }
+        });
+
         btn_user_add.addActionListener(e -> {
             if (Helper.isFieldEmpty(fld_user_name) || Helper.isFieldEmpty(fld_user_uname) || Helper.isFieldEmpty(fld_user_password)) {
                 Helper.showMessage(null, MessageType.ALL_FIELDS_MUST_BE_FILLED);
@@ -107,6 +127,19 @@ public class OperatorGUI extends JFrame {
                 }
             }
         });
+
+        btn_user_search.addActionListener(e -> {
+            String name = fld_search_user_name.getText();
+            String uname = fld_search_user_username.getText();
+            String type = cmb_search_user_type.getSelectedItem().toString();
+            String query = User.createSearchQuery(name, uname, type);
+            populateUserModel(User.searchUserList(query));
+
+        });
+
+        btn_logout.addActionListener(e -> {
+            dispose();
+        });
     }
 
     public void populateUserModel() {
@@ -114,6 +147,21 @@ public class OperatorGUI extends JFrame {
         cleanModel.setRowCount(0);
 
         User.getList().stream().forEach(u -> {
+            int i = 0;
+            row_user_list[i++] = u.getId();
+            row_user_list[i++] = u.getName();
+            row_user_list[i++] = u.getUname();
+            row_user_list[i++] = u.getPassword();
+            row_user_list[i++] = u.getType();
+            mdl_user_list.addRow(row_user_list);
+        });
+    }
+
+    public void populateUserModel(List<User> userList) {
+        DefaultTableModel cleanModel = (DefaultTableModel) tbl_user_list.getModel();
+        cleanModel.setRowCount(0);
+
+        userList.stream().forEach(u -> {
             int i = 0;
             row_user_list[i++] = u.getId();
             row_user_list[i++] = u.getName();

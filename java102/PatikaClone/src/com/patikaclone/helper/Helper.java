@@ -58,4 +58,19 @@ public class Helper {
         }
         JOptionPane.showMessageDialog(null, message, title, JOptionPane.INFORMATION_MESSAGE);
     }
+
+    public static boolean confirm(DialogType dialogType) {
+
+        String message = "Message";
+        String title = "Dialog";
+
+        switch (dialogType) {
+            case SURE :
+                message = "Are you sure want to process this operation.";
+                message = "Are you sure!";
+                break;
+        }
+
+        return JOptionPane.showConfirmDialog(null, message, title, JOptionPane.YES_OPTION) == 0;
+    }
 }

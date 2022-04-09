@@ -95,6 +95,11 @@ public class Patika {
 
     public static boolean remove(int id) {
         String query = "DELETE FROM patikas WHERE id = ?";
+        ArrayList<Course> courseList = Course.getList();
+        courseList.stream().filter(cl -> cl.getPatika().getId() == id).forEach(c -> {
+            Course.remove(c.getId());
+        });
+
         try {
             PreparedStatement preparedStatement = DBConnector.getInstance().prepareStatement(query);
             preparedStatement.setInt(1, id);

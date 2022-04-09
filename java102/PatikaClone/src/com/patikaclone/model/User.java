@@ -133,11 +133,67 @@ public class User {
         return userFound;
     }
 
-    public static boolean remove(int id) {
-        String query = "DELETE FROM users WHERE id = ?";
+    public static User getById(int id) {
+        User userFound = null;
+        String query = "SELECT * FROM users WHERE id = ?";
         try {
             PreparedStatement preparedStatement = DBConnector.getInstance().prepareStatement(query);
             preparedStatement.setInt(1, id);
+            ResultSet rs = preparedStatement.executeQuery();
+            while (rs.next()) {
+                userFound = new User();
+                userFound.setId(rs.getInt("id"));
+                userFound.setName(rs.getString("name"));
+                userFound.setUname(rs.getString("uname"));
+                userFound.setPassword(rs.getString("password"));
+                userFound.setType(rs.getString("type"));
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return userFound;
+    }
+
+    public static User getByUnameAndPassword(String uname, String password) {
+        User userFound = null;
+        String query = "SELECT * FROM users WHERE uname = ? AND password = ?";
+        try {
+            PreparedStatement preparedStatement = DBConnector.getInstance().prepareStatement(query);
+            preparedStatement.setString(1, uname);
+            preparedStatement.setString(2, password);
+            ResultSet rs = preparedStatement.executeQuery();
+            while (rs.next()) {
+//                userFound = new User();
+                switch (rs.getString("type")) {
+                    case "operator":
+                        userFound = new Operator();
+                        break;
+                    default:
+                        userFound = new User();
+                }
+                userFound.setId(rs.getInt("id"));
+                userFound.setName(rs.getString("name"));
+                userFound.setUname(rs.getString("uname"));
+                userFound.setPassword(rs.getString("password"));
+                userFound.setType(rs.getString("type"));
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return userFound;
+    }
+
+    public static boolean remove(int id) {
+        String query = "DELETE FROM users WHERE id = ?";
+        ArrayList<Course> courseList = Course.getListByUser(id);
+        courseList.stream().forEach(cL -> {
+            Course.remove(cL.getId());
+        });
+
+        try {
+            PreparedStatement preparedStatement = DBConnector.getInstance().prepareStatement(query);
+            preparedStatement.setInt(1, id);
+
             int result = preparedStatement.executeUpdate();
             return result != -1;
         } catch (SQLException e) {

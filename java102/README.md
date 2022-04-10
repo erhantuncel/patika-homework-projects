@@ -8,3 +8,4 @@
 6. [Insurance Management System](InsuranceManagementSystem/)
 7. [Race Of Threads](RaceOfThreads/)
 8. [BookList](BookList/)
+9. [PatikaClone](PatikaClone/)
